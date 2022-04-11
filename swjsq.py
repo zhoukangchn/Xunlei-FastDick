@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 from __future__ import print_function
+
+import atexit
+import json
 import os
 import re
-import sys
-import json
-import time
-import binascii
-import tarfile
-import atexit
 import socket
+import sys
+import tarfile
+import time
 
 origin_getaddrinfo = socket.getaddrinfo
 def getaddrinfo_wrapper(host, port, family=0, socktype=0, proto=0, flags=0):
@@ -16,8 +16,8 @@ def getaddrinfo_wrapper(host, port, family=0, socktype=0, proto=0, flags=0):
 socket.getaddrinfo = getaddrinfo_wrapper
 
 try:
-    import ssl
     import hashlib
+    import ssl
 except ImportError as ex:
     print("Error: cannot import module ssl or hashlib (%s)." % str(ex))
     print("If you are using openwrt, run \"opkg install python-openssl\"")
@@ -47,16 +47,18 @@ UNICODE_WARNING_SHOWN = False
 
 PY3K = sys.version_info[0] == 3
 if not PY3K:
-    import urllib2
-    from urllib2 import URLError
     from urllib import quote as url_quote
+
+    import urllib2
     from cStringIO import StringIO as sio
+    from urllib2 import URLError
+
     #rsa_pubexp = long(rsa_pubexp)
 else:
     import urllib.request as urllib2
+    from io import BytesIO as sio
     from urllib.error import URLError
     from urllib.parse import quote as url_quote
-    from io import BytesIO as sio
 
 account_session = '.swjsq.session'
 account_file_plain = 'swjsq.account.txt'
